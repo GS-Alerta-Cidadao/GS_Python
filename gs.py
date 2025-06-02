@@ -1,18 +1,20 @@
-# -*- coding: utf-8 -*-
+# Laura Barreto - RM561965
+# Matheus Freitas Vieira - RM566198
+# Natália Camargo - RM565769
 
 import random
 import time
 
 ALTURA_TOTAL_RESERVATORIO_CM = 400.0
-LIMIAR_ATENCAO_PERCENT = 0.50 #Acima de 50% atenção
-LIMIAR_CRITICO_PERCENT = 0.70 #Acima de 70% Risco Crítico
+LIMIAR_ATENCAO_PERCENT = 0.50 # Acima de 50% atenção
+LIMIAR_CRITICO_PERCENT = 0.70 # Acima de 70% Risco Crítico
 
 DADOS_SENSOR_SIMULADOS = [
-    50.0, 100.0, 150.0, 190.0, #Seguro
-    220.0, 250.0, 270.0, #Atenção
-    285.0, 300.0, 350.0, 395.0, #Risco Crítico
-    405.0, #Erro ou rio acima do limite máximo
-    -5.0, #Erro
+    50.0, 100.0, 150.0, 190.0, # Seguro
+    220.0, 250.0, 270.0, # Atenção
+    285.0, 300.0, 350.0, 395.0, # Risco Crítico
+    405.0, # Erro ou rio acima do limite máximo
+    -5.0, # Erro
     10.0 # Reset
 ]
 indice_leitura_sensor = 0

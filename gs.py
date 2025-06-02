@@ -24,16 +24,6 @@ DADOS_SENSOR_SIMULADOS = [
 indice_leitura_sensor = 0
 
 def validar_entrada_texto_obrigatorio(prompt_usuario, tamanho_max=150):
-    """
-    Solicita uma entrada de texto do usuário e garante que não seja vazia.
-
-    Args:
-        prompt_usuario (str): A mensagem a ser exibida para o usuário.
-        tamanho_max (int): Tamanho máximo permitido para a entrada.
-
-    Returns:
-        str: O texto de entrada validado.
-    """
     while True:
         entrada = input(prompt_usuario).strip()
         if not entrada:
@@ -44,17 +34,6 @@ def validar_entrada_texto_obrigatorio(prompt_usuario, tamanho_max=150):
             return entrada
 
 def validar_opcao_lista(prompt_usuario, opcoes_validas):
-    """
-    Solicita ao usuário que escolha uma opção de uma lista válida.
-
-    Args:
-        prompt_usuario (str): A mensagem a ser exibida.
-        opcoes_validas (dict): Um dicionário onde as chaves são as entradas do usuário
-                               e os valores são as descrições das opções.
-
-    Returns:
-        str: A chave da opção válida escolhida pelo usuário.
-    """
     print(prompt_usuario)
     for chave, descricao in opcoes_validas.items():
         print(f"  {chave}) {descricao}")
@@ -67,42 +46,20 @@ def validar_opcao_lista(prompt_usuario, opcoes_validas):
             exibir_mensagem_console(f"Opção inválida. Por favor, escolha entre: {', '.join(opcoes_validas.keys())}.", "ERRO")
 
 def ler_dados_sensor_simulado(sensor_id="principal"):
-    """
-    Simula a leitura de um sensor de nível de água.
-    Cicla através da lista DADOS_SENSOR_SIMULADOS.
 
-    Args:
-        sensor_id (str): Identificador do sensor (para futuras expansões).
-
-    Returns:
-        float: O nível da água simulado em cm, ou -1.0 para simular um erro de leitura.
-    """
     global indice_leitura_sensor
     if not DADOS_SENSOR_SIMULADOS:
-        # Se não houver dados, simula uma leitura aleatória estável ou com pequena variação
         return round(random.uniform(5.0, 25.0), 1)
 
     nivel_simulado = DADOS_SENSOR_SIMULADOS[indice_leitura_sensor]
-    indice_leitura_sensor = (indice_leitura_sensor + 1) % len(DADOS_SENSOR_SIMULADOS) # Cicla na lista
+    indice_leitura_sensor = (indice_leitura_sensor + 1) % len(DADOS_SENSOR_SIMULADOS)
 
-    # Simula um pequeno atraso, como se fosse uma leitura real
     time.sleep(0.5)
     return nivel_simulado
 
 def calcular_status_alerta_sensor(nivel_agua_cm, altura_total_cm, limiar_atencao_p, limiar_critico_p):
-    """
-    Calcula o status do alerta com base no nível da água e nos limiares.
 
-    Args:
-        nivel_agua_cm (float): Nível atual da água em cm.
-        altura_total_cm (float): Altura total do reservatório/local em cm.
-        limiar_atencao_p (float): Percentual para alerta de atenção (ex: 0.30 para 30%).
-        limiar_critico_p (float): Percentual para alerta crítico (ex: 0.70 para 70%).
-
-    Returns:
-        str: O status do alerta ("Seguro", "Atenção", "Crítico", "Falha Sensor").
-    """
-    if nivel_agua_cm < 0 or nivel_agua_cm > (altura_total_cm + altura_total_cm * 0.1) : # Considera uma margem de erro acima da altura total
+    if nivel_agua_cm < 0 or nivel_agua_cm > (altura_total_cm + altura_total_cm * 0.1) : 
         return "Falha Sensor"
 
     nivel_atencao_abs = altura_total_cm * limiar_atencao_p
@@ -116,13 +73,6 @@ def calcular_status_alerta_sensor(nivel_agua_cm, altura_total_cm, limiar_atencao
         return "Seguro"
 
 def coletar_relato_cidadao():
-    """
-    Coleta um relato de enchente do cidadão através de entradas do usuário.
-
-    Returns:
-        dict: Um dicionário contendo as informações do relato
-              (tipo, local, descricao), ou None se o usuário cancelar.
-    """
     exibir_mensagem_console("--- Registro de Nova Ocorrência Comunitária ---", "DESTAQUE")
 
     tipos_ocorrencia_validos = {
@@ -152,23 +102,10 @@ def coletar_relato_cidadao():
         return None
 
 def processar_relatos_para_alerta(lista_relatos):
-    """
-    Processa a lista de relatos para gerar um alerta comunitário (lógica simplificada).
-    Nesta versão, qualquer relato do tipo "crítico" gera um alerta.
-
-    Args:
-        lista_relatos (list): Lista de dicionários, onde cada dicionário é um relato.
-
-    Returns:
-        str or None: Mensagem de alerta comunitário ou None se nenhum alerta gerado.
-    """
     if not lista_relatos:
         return None
 
-    # Lógica simplificada: se o último relato for de um tipo considerado crítico, gera alerta.
-    # Tipos críticos podem ser definidos com base na descrição ou tipo.
-    # Por exemplo, se o tipo do último relato contém "subindo rapidamente" ou "alagamento de via"
-    ultimo_relato = lista_relatos[-1] # Pega o relato mais recente
+    ultimo_relato = lista_relatos[-1]
     if "subindo rapidamente" in ultimo_relato["tipo"].lower() or \
        "alagamento de via" in ultimo_relato["tipo"].lower() or \
        "risco de deslizamento" in ultimo_relato["tipo"].lower():
@@ -178,13 +115,6 @@ def processar_relatos_para_alerta(lista_relatos):
     return None
 
 def exibir_mensagem_console(mensagem, tipo="INFO"):
-    """
-    Exibe uma mensagem formatada no console.
-
-    Args:
-        mensagem (str): A mensagem a ser exibida.
-        tipo (str): O tipo da mensagem ("INFO", "ALERTA", "ERRO", "DESTAQUE").
-    """
     if tipo == "ALERTA":
         print(f"[ALERTA 🔴] {mensagem}")
     elif tipo == "ERRO":
@@ -195,9 +125,7 @@ def exibir_mensagem_console(mensagem, tipo="INFO"):
         print(f"[INFO ℹ️] {mensagem}")
 
 def main_loop_simulador():
-    """
-    Loop principal do simulador do sistema de alerta.
-    """
+
     exibir_mensagem_console("Iniciando Simulador do Sistema de Alerta Cidadão Conectado", "DESTAQUE")
 
     historico_relatos_comunitarios = []
@@ -206,11 +134,9 @@ def main_loop_simulador():
     while True:
         exibir_mensagem_console(f"Iniciando Ciclo de Monitoramento nº {ciclo_atual}", "DESTAQUE")
 
-        # 1. Ler dados do sensor simulado
         nivel_agua_atual_cm = ler_dados_sensor_simulado()
         exibir_mensagem_console(f"Sensor 'Rio Principal' - Leitura Nível Água: {nivel_agua_atual_cm:.2f} cm (de {ALTURA_TOTAL_RESERVATORIO_CM:.1f} cm)")
 
-        # 2. Calcular status de alerta do sensor
         status_alerta_do_sensor = calcular_status_alerta_sensor(
             nivel_agua_atual_cm,
             ALTURA_TOTAL_RESERVATORIO_CM,
@@ -219,29 +145,25 @@ def main_loop_simulador():
         )
         exibir_mensagem_console(f"Status do Sistema (baseado no sensor): {status_alerta_do_sensor}", "ALERTA" if status_alerta_do_sensor != "Seguro" else "INFO")
 
-        # 3. Perguntar se o usuário deseja registrar uma ocorrência
         if input("Deseja registrar uma ocorrência comunitária neste ciclo? (s/n): ").lower() == 's':
             novo_relato = coletar_relato_cidadao()
             if novo_relato:
                 historico_relatos_comunitarios.append(novo_relato)
                 exibir_mensagem_console("Relato comunitário adicionado com sucesso!", "INFO")
 
-                # 4. Processar relatos para gerar um alerta comunitário (se houver)
                 alerta_baseado_em_relatos = processar_relatos_para_alerta(historico_relatos_comunitarios)
                 if alerta_baseado_em_relatos:
                     exibir_mensagem_console(alerta_baseado_em_relatos, "ALERTA")
             else:
                 exibir_mensagem_console("Nenhum relato comunitário foi adicionado neste ciclo.", "INFO")
 
-        # 5. Perguntar se deseja continuar para o próximo ciclo
         if input("\nContinuar para o próximo ciclo de monitoramento? (s/n): ").lower() != 's':
             break
 
         ciclo_atual += 1
-        print("-" * 50) # Separador visual
+        print("-" * 50)
 
     exibir_mensagem_console("Simulador encerrado pelo usuário.", "DESTAQUE")
 
-# --- Ponto de Entrada do Script ---
 if __name__ == "__main__":
     main_loop_simulador()

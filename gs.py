@@ -6,8 +6,10 @@ import random
 import time
 
 ALTURA_TOTAL_RESERVATORIO_CM = 400.0
-LIMIAR_ATENCAO_PERCENT = 0.50 # Acima de 50% atenção
-LIMIAR_CRITICO_PERCENT = 0.70 # Acima de 70% Risco Crítico
+LIMIAR_ATENCAO_PERCENT = 0.50
+LIMIAR_CRITICO_PERCENT = 0.70
+
+# Determinar a altura total do reservatorio/rio que está sendo analizado pelo sensor simulado, além de dizer qual é o nível de atenção e o crítico em %.
 
 DADOS_SENSOR_SIMULADOS = [
     50.0, 100.0, 150.0, 190.0, # Seguro
@@ -17,7 +19,8 @@ DADOS_SENSOR_SIMULADOS = [
     -5.0, # Erro
     10.0 # Reset
 ]
-indice_leitura_sensor = 0
+
+# Lista que apresenta os valores que podem ser lidos pelo sensor simulado.
 
 def validar_entrada_texto_obrigatorio(prompt_usuario, tamanho_max=150):
     while True:
@@ -28,6 +31,10 @@ def validar_entrada_texto_obrigatorio(prompt_usuario, tamanho_max=150):
             exibir_mensagem_console(f"O texto não pode exceder {tamanho_max} caracteres. Por favor, tente novamente.", "ERRO")
         else:
             return entrada
+
+# Essa função verifica se o usuário inseriu o texto solicitado e se o texto está dentro do tamanho correto, se o texto estiver dentro dos parâmetros
+# a função retorna o texto, caso o usuário não digite o texto exibe uma mensagem de erro e o while retorna para o inicio para o usuario digitar o texto,
+# caso o usuário digite um texto maior do que o permitido é exibido uma mensagem de erro e solicita para ele digitar novamente.
 
 def validar_opcao_lista(prompt_usuario, opcoes_validas):
     print(prompt_usuario)
@@ -41,17 +48,27 @@ def validar_opcao_lista(prompt_usuario, opcoes_validas):
         else:
             exibir_mensagem_console(f"Opção inválida. Por favor, escolha entre: {', '.join(opcoes_validas.keys())}.", "ERRO")
 
-def ler_dados_sensor_simulado(sensor_id="principal"):
+# Essa função exibe um menu com opções válidas para o usuário escolher, caso o usuário selecione uma opção existente, a função retorna a escolha,
+# se a opção for inválida, exibe uma mensagem de erro e solicita novamente a escolha até que uma opção válida seja digitada.
 
+def ler_dados_sensor_simulado(sensor_id="principal"):
     global indice_leitura_sensor
+
+    if indice_leitura_sensor is None:
+        indice_leitura_sensor = random.randint(0, 3)
+
     if not DADOS_SENSOR_SIMULADOS:
-        return round(random.uniform(5.0, 25.0), 1)
+        return round(random.uniform(50, 400), 1)
 
     nivel_simulado = DADOS_SENSOR_SIMULADOS[indice_leitura_sensor]
     indice_leitura_sensor = (indice_leitura_sensor + 1) % len(DADOS_SENSOR_SIMULADOS)
 
     time.sleep(0.5)
     return nivel_simulado
+
+
+# Essa função simula a leitura do sensor de nível de água, na primeira execução, começa por um índice aleatório entre os quatro primeiros da lista,
+# depois segue pelos dados simulados se a lista estiver vazia, gera um valor aleatório entre 50 e 400 cm.
 
 def calcular_status_alerta_sensor(nivel_agua_cm, altura_total_cm, limiar_atencao_p, limiar_critico_p):
 
@@ -67,6 +84,9 @@ def calcular_status_alerta_sensor(nivel_agua_cm, altura_total_cm, limiar_atencao
         return "Atenção"
     else:
         return "Seguro"
+
+# Essa função calcula o status do alerta com base no nível de água lido pelo sensor simulado, se o nível estiver fora da faixa esperada,
+# retorna "Falha Sensor", se não estiver, compara com os limiares para determinar se a situação é "Seguro", "Atenção" ou "Crítico".
 
 def coletar_relato_cidadao():
     exibir_mensagem_console("--- Registro de Nova Ocorrência Comunitária ---", "DESTAQUE")
@@ -97,6 +117,9 @@ def coletar_relato_cidadao():
         exibir_mensagem_console("Registro de ocorrência cancelado.", "INFO")
         return None
 
+# Essa função coleta informações do cidadão sobre uma ocorrência relacionada, o usuário escolhe o tipo, informa o local e uma descrição,
+# se o usuário confirmar o envio da ocorrência, a função retorna o relato, se ele não conficar, cancela o registro.
+
 def processar_relatos_para_alerta(lista_relatos):
     if not lista_relatos:
         return None
@@ -110,6 +133,9 @@ def processar_relatos_para_alerta(lista_relatos):
                 f"Recomenda-se precaução na área!")
     return None
 
+# Essa função analisa a lista de relatos enviados pela comunidade e verifica se o último relato requer um alerta urgente,
+# se o tipo do relato for crítico, retorna uma mensagem de alerta ou retorna None se não for urgente.
+
 def exibir_mensagem_console(mensagem, tipo="INFO"):
     if tipo == "ALERTA":
         print(f"[ALERTA 🔴] {mensagem}")
@@ -120,7 +146,13 @@ def exibir_mensagem_console(mensagem, tipo="INFO"):
     else: # INFO
         print(f"[INFO ℹ️] {mensagem}")
 
+# Essa função exibe mensagens no console com diferentes categorias visuais de destaque: ALERTA, ERRO, DESTAQUE ou INFO, Ajuda a organizar e
+# identificar melhor o tipo da informação apresentada ao usuário para um entendimento mais facil.
+
 def main_loop_simulador():
+
+    global indice_leitura_sensor
+    indice_leitura_sensor = None
 
     exibir_mensagem_console("Iniciando Simulador do Sistema de Alerta Cidadão Conectado", "DESTAQUE")
 
@@ -161,5 +193,75 @@ def main_loop_simulador():
 
     exibir_mensagem_console("Simulador encerrado pelo usuário.", "DESTAQUE")
 
-if __name__ == "__main__":
+# Essa função executa o ciclo principal do simulador, realizando leituras do sensor e permitindo o registro de ocorrências comunitárias,
+# a cada ciclo, exibe as informações e solicita interações do usuário e pode ser encerrada quando o usuário desejar, no icicio da função,
+# a variável global indice_leitura_sensor é inicializada como none para que a primeira leitura do sensor simulado seja aleatório.
+
+usuarios = {}
+
+def cadastrar_usuario():
+    email = input("Digite seu e-mail (será seu login): ")
+    if email in usuarios:
+        print("E-mail já cadastrado!\n")
+        return
+
+    nome = input("Digite seu nome completo: ")
+    telefone = input("Digite seu telefone: ")
+    endereco = input("Digite seu endereço: ")
+    senha = input("Crie uma senha: ")
+
+    usuarios[email] = {
+        "nome": nome,
+        "telefone": telefone,
+        "endereco": endereco,
+        "senha": senha
+    }
+
+    print("Cadastro realizado com sucesso!\n")
+    print(f"\n Login bem-sucedido! Bem-vindo(a), {usuarios[email]['nome']}!\n")
+
     main_loop_simulador()
+
+# Essa função inicia pedindo o e-mail do usuário e verifica se o e-mail já foi cadastrado, dando um retorno ao usuário.
+# Após verificar isso, o usuário deve preencher os outros campos para se cadastrar. Os dados são armazenados e o cadastro é realizado com sucesso.
+
+def fazer_login():
+    email = input("Digite seu e-mail: ")
+    senha = input("Digite sua senha: ")
+
+    if email in usuarios and usuarios[email]["senha"] == senha:
+        print(f"\n Login bem-sucedido! Bem-vindo(a), {usuarios[email]['nome']}!\n")
+        print("Seus dados:")
+        print(f"E-mail: {email}")
+        print(f"Telefone: {usuarios[email]['telefone']}")
+        print(f"Endereço: {usuarios[email]['endereco']}\n")
+
+        main_loop_simulador()
+    else:
+        print("E-mail ou senha incorretos.\n")
+
+# Essa função inicia pedindo e-mail e senha. Caso estejam corretos, o programa exibe uma mensagem de sucesso e retorna os dados do usuário.
+# Caso estejam incorretos, retorna a mensagem "E-mail ou senha incorretos."
+
+def menu():
+    while True:
+        print("Menu:")
+        print("1 - Cadastrar")
+        print("2 - Login")
+        print("3 - Sair")
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            cadastrar_usuario()
+        elif opcao == "2":
+            fazer_login()
+        elif opcao == "3":
+            print("Encerrando programa.")
+            break
+        else:
+            print("Opção inválida.\n")
+
+# Essa função ajuda o usuário a escolher se quer se cadastrar, fazer login ou sair do programa, direcionando para as outras funções, utilizando
+# um while True para o que a função seja executada até o usuário escolher uma opção válida.
+
+menu()

@@ -1,0 +1,67 @@
+Autores:
+- Laura Barreto - RM561965
+- Matheus Freitas Vieira - RM566198
+- Natália Camargo - RM565769
+
+
+OBJETIVO DO SISTEMA:
+
+Este sistema simula um monitoramento de nível de água em reservatórios e coleta relatos comunitários 
+para emitir alertas preventivos em casos de enchentes, alagamentos e outros eventos críticos relacionados.
+
+
+
+COMPONENTES GLOBAIS DO SISTEMA:
+
+
+ALTURA_TOTAL_RESERVATORIO_CM:
+  Altura máxima do reservatório monitorado (em centímetros).
+
+LIMIAR_ATENCAO_PERCENT / LIMIAR_CRITICO_PERCENT:
+  Percentuais que determinam os níveis de "atenção" (50%) e "crítico" (70%).
+
+DADOS_SENSOR_SIMULADOS:
+  Lista de leituras simuladas do sensor com valores que representam os níveis seguros, 
+  de atenção e críticos, além de valores para erro/reset.
+
+indice_leitura_sensor:
+  Controla a posição atual da próxima leitura simulada. Iniciado aleatoriamente entre os 4 primeiros índices.
+
+
+
+FUNÇÕES PRINCIPAIS:
+
+
+validar_entrada_texto_obrigatorio(prompt_usuario, tamanho_max=150)
+  Solicita ao usuário um texto obrigatório com tamanho máximo definido. Retorna o texto válido.
+
+validar_opcao_lista(prompt_usuario, opcoes_validas)
+  Exibe um menu de opções para o usuário e valida a escolha. Retorna a opção escolhida.
+
+ler_dados_sensor_simulado(sensor_id="principal")
+  Retorna um valor simulado de leitura do sensor. Inicia aleatoriamente entre os quatro primeiros valores,
+  depois avança a cada nova medida
+
+calcular_status_alerta_sensor(nivel_agua_cm, altura_total_cm, limiar_atencao_p, limiar_critico_p)
+  Calcula o status do alerta com base no nível de água atual: "Seguro", "Atenção", "Crítico" ou "Falha Sensor".
+
+coletar_relato_cidadao()
+  Permite o registro de uma ocorrência comunitária com tipo, local e descrição. Retorna o relato ou cancela.
+
+processar_relatos_para_alerta(lista_relatos)
+  Analisa os relatos recebidos e gera uma mensagem de alerta comunitário caso identifique situação crítica.
+
+exibir_mensagem_console(mensagem, tipo="INFO")
+  Exibe uma mensagem formatada no console com base no tipo: INFO, ERRO, ALERTA ou DESTAQUE.
+
+main_loop_simulador()
+  Executa os ciclos de monitoramento, leitura de sensores, coleta de relatos e exibição de status.
+
+cadastrar_usuario()
+  Cadastra um novo usuário com e-mail, nome, telefone, endereço e senha. Inicia o simulador após cadastro.
+
+fazer_login()
+  Permite que usuários façam login usando e-mail e senha. Se bem-sucedido, inicia o simulador.
+
+menu()
+  Interface inicial que oferece opções de cadastro, login ou sair do sistema.

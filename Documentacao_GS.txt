@@ -10,9 +10,20 @@ Este sistema simula um monitoramento de nível de água em reservatórios e cole
 para emitir alertas preventivos em casos de enchentes, alagamentos e outros eventos críticos relacionados.
 
 
+FUNCIONALIDADES DO SISTEMA:
+
+Inicialmente o usuário deve realizar o login ou se cadastrar caso não tenha criado a conta ainda, após isso ele receberá as informações a
+respeito da situação atual do nível do rio, que é gerada por um simulador que começa escolhendo um valor aleatório e vai crescendo 
+continuamente nas demais leituras simuladas.
+Baseado no nível atual do rio o usuário vai receber uma informação se ele está no nível seguro (<50%), alerta (50% < 70%), ou risco 
+crítico (> 70%).
+Além de receber as informações do nível do rio, o usuário pode criar 5 tipos de alerta para a comunidade ("Alagamento de via", "Bueiro
+entupido com acúmulo de água", "Nível de rio/córrego subindo rapidamente", "Risco de deslizamento devido à chuva", "Outro tipo de 
+ocorrência relacionada a enchentes"). Para isso, o usuário deve informar o local que está ocorrendo o evento, e adicionar uma descrição. 
+Apartir desses relatos serão gerados alertas.
+
 
 COMPONENTES GLOBAIS DO SISTEMA:
-
 
 ALTURA_TOTAL_RESERVATORIO_CM:
   Altura máxima do reservatório monitorado (em centímetros).

@@ -6,21 +6,48 @@ Autores:
 
 OBJETIVO DO SISTEMA:
 
-Este sistema simula um monitoramento de nível de água em reservatórios e coleta relatos comunitários 
-para emitir alertas preventivos em casos de enchentes, alagamentos e outros eventos críticos relacionados.
+O objetivo desse sistema em Python é demonstrar um mecanismo de monitoramento de níveis de água e a integração de alertas comunitários 
+para a prevenção de incidentes relacionados a enchentes e alagamentos. O sistema visa:
+
+Simular a Vigilância Contínua: Representar como um sistema automatizado poderia monitorar o nível de água em um corpo hídrico (rio ou 
+reservatório), fornecendo uma base para a tomada de decisões.
+
+Capacitar a Ação Comunitária: Ilustrar a importância da participação cidadã ao permitir que usuários reportem ocorrências 
+observadas no ambiente, como alagamentos de vias ou o rápido aumento do nível de rios, enriquecendo o sistema com informações locais e em
+tempo real.
+
+Emitir Alertas Preventivos Graduados: Com base nos dados do sensor simulado e nos relatos da comunidade, o sistema busca gerar alertas 
+classificados por criticidade (Seguro, Alerta, Risco Crítico). O objetivo é fornecer informações que permitam à população e às autoridades
+tomar medidas preventivas antes que um evento crítico se agrave.
+
+Servir como Ferramenta Conceitual: Apresentar, de forma simplificada, como os componentes de software podem processar diferentes tipos de 
+entrada (dados de sensor e dados de usuário) para alcançar um objetivo comum de segurança e prevenção em contextos de desastres naturais.
 
 
 FUNCIONALIDADES DO SISTEMA:
 
-Inicialmente o usuário deve realizar o login ou se cadastrar caso não tenha criado a conta ainda, após isso ele receberá as informações a
-respeito da situação atual do nível do rio, que é gerada por um simulador que começa escolhendo um valor aleatório e vai crescendo 
-continuamente nas demais leituras simuladas.
-Baseado no nível atual do rio o usuário vai receber uma informação se ele está no nível seguro (<50%), alerta (50% < 70%), ou risco 
-crítico (> 70%).
-Além de receber as informações do nível do rio, o usuário pode criar 5 tipos de alerta para a comunidade ("Alagamento de via", "Bueiro
-entupido com acúmulo de água", "Nível de rio/córrego subindo rapidamente", "Risco de deslizamento devido à chuva", "Outro tipo de 
-ocorrência relacionada a enchentes"). Para isso, o usuário deve informar o local que está ocorrendo o evento, e adicionar uma descrição. 
-Apartir desses relatos serão gerados alertas.
+O usuário deve primeiro fazer login ou se cadastrar, caso ainda não tenha uma conta.
+
+Depois disso, ele verá informações sobre o nível atual do rio, que é gerado por um simulador. Esse simulador começa com um valor 
+aleatório e vai aumentando a cada siclo de medição simulada.
+
+Com base nesse nível, o sistema mostra uma das seguintes situações:
+
+Nível seguro: abaixo de 50%
+Alerta: entre 50% e 70%
+Risco crítico: acima de 70%
+
+Além de ver essas informações, o usuário também pode criar alertas para a comunidade sobre situações relacionadas a enchentes. Existem 5
+tipos de alerta que podem ser enviados:
+
+1. Alagamento de via
+2. Bueiro entupido com acúmulo de água
+3. Nível de rio ou córrego subindo rapidamente
+4. Risco de deslizamento por causa da chuva
+5. Outro tipo de ocorrência relacionada a enchentes
+
+Para enviar um alerta, o usuário deve informar o local onde está acontecendo o problema e descrever a situação. Esses relatos ajudam a
+gerar alertas para outras pessoas da comunidade.
 
 
 COMPONENTES GLOBAIS DO SISTEMA:
